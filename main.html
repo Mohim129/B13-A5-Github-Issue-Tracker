@@ -1,11 +1,102 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Github issue Tracker||Home</title>
-</head>
-<body>
-    Hello Main
-</body>
+
+    <link rel="stylesheet" href="./style/style.css" />
+    <!-- tailwind and daisyui -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@5"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- font-awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="navbar bg-base-100 shadow-sm justify-around grid gap-4 sm:flex">
+        <div class="flex justify-center items-center ">
+          <img class="w-9" src="./assets/github-logo.png" alt="">
+          <p class="btn btn-ghost text-2xl">Github Issue Tracker</p>
+        </div>
+        <div class="flex gap-10 sm:gap-4">
+          <input
+            type="text"
+            placeholder="Search"
+            class="input input-bordered w-24 md:w-auto"
+          />
+          <button class="btn btn-primary"><i class="fa-solid fa-plus"></i>New Issue</button>
+        </div>
+      </div>
+    </header>
+    <main class="max-w-6xl w-11/12 mx-auto my-16 p-6 space-y-12">
+        <section id="toggle-btns" class=" grid sm:flex gap-4">
+            <button id="all-btn" class="btn btn-primary">All</button>
+            <button id="all-btn" class="btn btn-primary btn-outline">Open</button>
+            <button id="all-btn" class="btn btn-primary btn-outline">Closed</button>
+        </section>
+        <section id="status-bar" class=" sm:flex justify-between">
+            <div class="flex gap-4">
+                <div class="bg-[#ECE4FF] p-4 rounded-full">
+                    <img src="./assets/Aperture.png" alt="">
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold"><span id="issue-count">50</span> issues</h2>
+                    <p class="text-[#64748B]">Track and manage your project issues</p>
+                </div>
+            </div>
+            <div class="flex gap-4 justify-center items-center">
+                <img src="./assets/Open-Status.png" alt="">
+                <p>Open</p>
+                <img src="./assets/Closed- Status .png" alt="">
+                <p>Closed</p>
+            </div>
+        </section>
+        <section id="all-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4">
+            <div class="card shadow-lg p-4 space-y-4 border-t-4 border-success bg-white">
+                <div class="flex justify-between">
+                    <img src="./assets/Open-Status.png" alt="">
+                    <!-- <img src="./assets/Closed- Status .png" alt=""> -->
+                    <button class="px-3 rounded-full bg-error/20 text-error">High</button>
+                </div>
+                <h4 class="font-semibold">Fix navigation menu on mobile devices</h4>
+                <p class="text-[#64748B] text-[14px]">The navigation menu doesn't collapse properly on mobile devices...</p>
+                <div>
+                    <div class=" btn px-3 rounded-full bg-error/20 text-error"><i class="fa-solid fa-bug"></i>Bug</div>
+                    <div class="btn px-3 rounded-full bg-warning/20 text-warning"><i class="fa-regular fa-life-ring"></i>Help Wanted</div>
+                    
+                </div>
+                <hr>
+                <div>
+                    <p class="text-[#64748B] text-[14px]">#1 by john_doe</p>
+                    <p class="text-[#64748B] text-[14px]">1/15/2024</p>
+                </div>
+            </div>
+
+        </section>
+        <section id="open-issues">
+
+        </section>
+        <section id="closed-issues">
+
+        </section>
+    </main>
+  </body>
 </html>
