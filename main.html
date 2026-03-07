@@ -48,13 +48,13 @@
     </header>
     <main class="max-w-6xl w-11/12 mx-auto my-16 p-6 space-y-12">
         <section id="toggle-btns" class=" grid sm:flex gap-4">
-            <button id="all-btn" class="btn btn-primary">All</button>
-            <button id="all-btn" class="btn btn-primary btn-outline">Open</button>
-            <button id="all-btn" class="btn btn-primary btn-outline">Closed</button>
+            <button onclick="switchTab('all-btn')" id="all-btn" class="btn btn-primary">All</button>
+            <button onclick="switchTab('open-btn')" id="open-btn" class="btn btn-primary btn-outline">Open</button>
+            <button onclick="switchTab('closed-btn')" id="closed-btn" class="btn btn-primary btn-outline">Closed</button>
         </section>
         <section id="status-bar" class=" sm:flex justify-between">
             <div class="flex gap-4">
-                <div class="bg-[#ECE4FF] p-4 rounded-full">
+                <div class="bg-[#ECE4FF] p-4 h-16 w-16 rounded-full">
                     <img src="./assets/Aperture.png" alt="">
                 </div>
                 <div>
@@ -70,33 +70,18 @@
             </div>
         </section>
         <section id="all-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4">
-            <div class="card shadow-lg p-4 space-y-4 border-t-4 border-success bg-white">
-                <div class="flex justify-between">
-                    <img src="./assets/Open-Status.png" alt="">
-                    <!-- <img src="./assets/Closed- Status .png" alt=""> -->
-                    <button class="px-3 rounded-full bg-error/20 text-error">High</button>
-                </div>
-                <h4 class="font-semibold">Fix navigation menu on mobile devices</h4>
-                <p class="text-[#64748B] text-[14px]">The navigation menu doesn't collapse properly on mobile devices...</p>
-                <div>
-                    <div class=" btn px-3 rounded-full bg-error/20 text-error"><i class="fa-solid fa-bug"></i>Bug</div>
-                    <div class="btn px-3 rounded-full bg-warning/20 text-warning"><i class="fa-regular fa-life-ring"></i>Help Wanted</div>
-                    
-                </div>
-                <hr>
-                <div>
-                    <p class="text-[#64748B] text-[14px]">#1 by john_doe</p>
-                    <p class="text-[#64748B] text-[14px]">1/15/2024</p>
-                </div>
-            </div>
+            <!-- ---------------------------------------- -->
+
 
         </section>
-        <section id="open-issues">
-
+        <section id="open-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 hidden" >
+            
         </section>
-        <section id="closed-issues">
+        <section id="closed-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 hidden">
 
         </section>
     </main>
+
+    <script src="./script/main.js"></script>
   </body>
 </html>
