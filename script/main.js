@@ -1,8 +1,40 @@
+// calculate and display total issues count----------
+let selectedTab = "all-btn";
+
+fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
+  .then((response) => response.json())
+    .then((data) => {
+      totalIssues = data.data.length;
+      if (selectedTab == "all-btn") {
+        document.getElementById("issue-count").innerText = totalIssues;
+      } 
+      }
+    );
+
+
+
+
+
 // -------------- Tab Switching Function --------------
 function switchTab(tab) {
   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
     .then((response) => response.json())
-    .then((data) => data);
+    .then((data) => {
+      totalIssues = data.data.length;
+      totalOpenIssues = data.data.filter(
+        (issue) => issue.status === "open",
+      ).length;
+      totalClosedIssues = data.data.filter(
+        (issue) => issue.status === "closed",
+      ).length;
+      if (selectedTab == "all-btn") {
+        document.getElementById("issue-count").innerText = totalIssues;
+      } else if (selectedTab == "open-btn") {
+        document.getElementById("issue-count").innerText = totalOpenIssues;
+      } else if (selectedTab == "closed-btn") {
+        document.getElementById("issue-count").innerText = totalClosedIssues;
+      }
+    });
   // const totalIssues = data.data.length();
   // console.log("issues: ",totalIssues);
 
@@ -15,6 +47,7 @@ function switchTab(tab) {
     const closedBtn = document.getElementById("closed-btn");
     closedBtn.classList.add("btn-outline");
 
+
     //content change
     const allIssues = document.getElementById("all-issues");
     allIssues.classList.remove("hidden");
@@ -22,6 +55,9 @@ function switchTab(tab) {
     openIssues.classList.add("hidden");
     const closedIssues = document.getElementById("closed-issues");
     closedIssues.classList.add("hidden");
+
+    selectedTab = "all-btn";
+
   } else if (tab == "open-btn") {
     //btn color change
     const allBtn = document.getElementById("all-btn");
@@ -38,6 +74,7 @@ function switchTab(tab) {
     openIssues.classList.remove("hidden");
     const closedIssues = document.getElementById("closed-issues");
     closedIssues.classList.add("hidden");
+    selectedTab = "open-btn";
   } else if (tab == "closed-btn") {
     //btn color change
     const allBtn = document.getElementById("all-btn");
@@ -54,6 +91,8 @@ function switchTab(tab) {
     openIssues.classList.add("hidden");
     const closedIssues = document.getElementById("closed-issues");
     closedIssues.classList.remove("hidden");
+
+    selectedTab = "closed-btn";
   }
 }
 
@@ -91,7 +130,7 @@ const displayIssues = (issues) => {
     const issueCard = document.createElement("div");
     if (issue.status == "open") {
       issueCard.innerHTML = `
-            <div class="card shadow-lg p-4 space-y-4 border-t-4 border-success bg-white">
+            <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-lg p-4 space-y-4 border-t-4 border-success bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Open-Status.png" alt="">
                     <!-- <img src="./assets/Closed- Status .png" alt=""> -->
@@ -104,10 +143,12 @@ const displayIssues = (issues) => {
                     <div class="btn px-3 rounded-full bg-warning/20 text-warning"><i class="fa-regular fa-life-ring"></i>Help Wanted</div>
                     
                 </div>
-                <hr class="border-[#E2E8F0]">
-                <div>
+                <div class="flex flex-col justify-end h-full">
+                  <hr class="border-[#E2E8F0] pt-4">
+                  <div class="grid justify-between">
                     <p class="text-[#64748B] text-[14px]">#${issue.id} by ${issue.author}</p>
                     <p class="text-[#64748B] text-[14px]">1/15/2024</p>
+                  </div>
                 </div>
             </div>
         `;
@@ -118,7 +159,7 @@ const displayIssues = (issues) => {
     }
     else if(issue.status == "closed"){
         issueCard.innerHTML = `
-                    <div class="card shadow-lg p-4 space-y-4 border-t-4 border-primary bg-white">
+                    <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-lg p-4 space-y-4 border-t-4 border-primary bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Closed- Status .png" alt="">
                     <button class="px-3 rounded-full bg-error/20 text-error">${issue.priority}</button>
@@ -130,10 +171,13 @@ const displayIssues = (issues) => {
                     <div class="btn px-3 rounded-full bg-warning/20 text-warning"><i class="fa-regular fa-life-ring"></i>Help Wanted</div>
                     
                 </div>
-                <hr class="border-[#E2E8F0]">
-                <div>
+                
+                <div class="flex flex-col justify-end h-full">
+                  <hr class="border-[#E2E8F0] pt-4">
+                  <div class="grid justify-between">
                     <p class="text-[#64748B] text-[14px]">#${issue.id} by ${issue.author}</p>
                     <p class="text-[#64748B] text-[14px]">1/15/2024</p>
+                  </div>
                 </div>
             </div>
         `;
@@ -145,6 +189,7 @@ const displayIssues = (issues) => {
     
   });
 };
-
+ 
 
 loadIssues();
+console.log("selected tab: ", selectedTab);
