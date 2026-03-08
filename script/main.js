@@ -1,53 +1,64 @@
+let selectedTab = "all-btn";
+
+
+// ---------------spinner function---------------
+
+const spinnerManager = (status) => {
+  if(status==true){
+    document.getElementById('spinner').classList.remove('hidden')
+    document.getElementById("issues-container").classList.add("hidden");
+  }else{
+    document.getElementById("spinner").classList.add("hidden");
+    document.getElementById("issues-container").classList.remove("hidden");
+  }
+};
+
 //-------------make labels function--------------
- const labelMaker = (label) => {
-    const labelColors = (type) =>{
-        const colors = {
-          bug: "btn px-3 rounded-full bg-error/20 text-error",
-          enhancement: "btn px-3 rounded-full bg-success/20 text-success",
-          "help wanted": "btn px-3 rounded-full bg-warning/20 text-warning",
-          documentation:
-            "btn px-3 rounded-full bg-info-content/20 text-info-content",
-          "good first issue": "btn px-3 rounded-full bg-info/20 text-info",
-        };
-        return colors[type]
-    }
-    const labelIcon = (type) =>{
-        const icons = {
-          bug: "fa-bug",
-          enhancement: "fa-star",
-          "help wanted": "fa-life-ring",
-          documentation: "fa-clipboard",
-          "good first issue": "fa-thumbs-up",
-        };
-        return icons[type]
-    }
+const labelMaker = (label) => {
+  const labelColors = (type) => {
+    const colors = {
+      bug: "btn px-3 rounded-full bg-error/20 text-error",
+      enhancement: "btn px-3 rounded-full bg-success/20 text-success",
+      "help wanted": "btn px-3 rounded-full bg-warning/20 text-warning",
+      documentation:
+        "btn px-3 rounded-full bg-info-content/20 text-info-content",
+      "good first issue": "btn px-3 rounded-full bg-info/20 text-info",
+    };
+    return colors[type];
+  };
+  const labelIcon = (type) => {
+    const icons = {
+      bug: "fa-bug",
+      enhancement: "fa-star",
+      "help wanted": "fa-life-ring",
+      documentation: "fa-clipboard",
+      "good first issue": "fa-thumbs-up",
+    };
+    return icons[type];
+  };
 
-    const labelBadge = label.map(
-      (el) =>
-        `<span class="${labelColors(el)}"><i class="fa-solid ${labelIcon(el)}"></i>${el.toUpperCase()}</span>`,
-    );
-    return labelBadge.join(" ");
- }
-
-
+  const labelBadge = label.map(
+    (el) =>
+      `<span class="${labelColors(el)}"><i class="fa-solid ${labelIcon(el)}"></i>${el.toUpperCase()}</span>`,
+  );
+  return labelBadge.join(" ");
+};
 
 //-------calculate and display total issues count----------
-let selectedTab = "all-btn";
+
 
 fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
   .then((response) => response.json())
-    .then((data) => {
-      totalIssues = data.data.length;
-      if (selectedTab == "all-btn") {
-        document.getElementById("issue-count").innerText = totalIssues;
-      } 
-      }
-    );
-
-
+  .then((data) => {
+    totalIssues = data.data.length;
+    if (selectedTab == "all-btn") {
+      document.getElementById("issue-count").innerText = totalIssues;
+    }
+  });
 
 // -------------- Tab Switching Function --------------
 function switchTab(tab) {
+  spinnerManager(true);
   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
     .then((response) => response.json())
     .then((data) => {
@@ -65,6 +76,7 @@ function switchTab(tab) {
       } else if (selectedTab == "closed-btn") {
         document.getElementById("issue-count").innerText = totalClosedIssues;
       }
+      spinnerManager(false);
     });
   // const totalIssues = data.data.length();
   // console.log("issues: ",totalIssues);
@@ -78,7 +90,6 @@ function switchTab(tab) {
     const closedBtn = document.getElementById("closed-btn");
     closedBtn.classList.add("btn-outline");
 
-
     //content change
     const allIssues = document.getElementById("all-issues");
     allIssues.classList.remove("hidden");
@@ -88,7 +99,6 @@ function switchTab(tab) {
     closedIssues.classList.add("hidden");
 
     selectedTab = "all-btn";
-
   } else if (tab == "open-btn") {
     //btn color change
     const allBtn = document.getElementById("all-btn");
@@ -105,7 +115,10 @@ function switchTab(tab) {
     openIssues.classList.remove("hidden");
     const closedIssues = document.getElementById("closed-issues");
     closedIssues.classList.add("hidden");
+
+
     selectedTab = "open-btn";
+    
   } else if (tab == "closed-btn") {
     //btn color change
     const allBtn = document.getElementById("all-btn");
@@ -130,6 +143,7 @@ function switchTab(tab) {
 // -------------- Load issues cards --------------
 
 const loadIssues = () => {
+  spinnerManager(true)
   fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
     .then((response) => response.json())
     .then((data) => displayIssues(data.data));
@@ -152,7 +166,6 @@ const loadIssues = () => {
 // }
 
 const displayIssues = (issues) => {
-
   const allIssuesContainer = document.getElementById("all-issues");
   const openIssuesContainer = document.getElementById("open-issues");
   const closedIssuesContainer = document.getElementById("closed-issues");
@@ -165,16 +178,16 @@ const displayIssues = (issues) => {
     function color(priority) {
       if (priority == "high") {
         return "bg-error/20 text-error";
-        } else if (priority == "medium") {
-            return "bg-warning/20 text-warning";
-        } else if (priority == "low") {
-            return "bg-neutral/20 text-neutral";
-        }
+      } else if (priority == "medium") {
+        return "bg-warning/20 text-warning";
+      } else if (priority == "low") {
+        return "bg-neutral/20 text-neutral";
+      }
     }
     const issueCard = document.createElement("div");
     if (issue.status == "open") {
       issueCard.innerHTML = `
-            <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-lg p-4 space-y-4 border-t-4 border-success bg-white">
+            <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-success bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Open-Status.png" alt="">
                     <!-- <img src="./assets/Closed- Status .png" alt=""> -->
@@ -196,13 +209,12 @@ const displayIssues = (issues) => {
             </div>
         `;
 
-        allIssuesContainer.appendChild(issueCard);
-        const copy = issueCard.cloneNode(true);
-        openIssuesContainer.appendChild(copy);
-    }
-    else if(issue.status == "closed"){
-        issueCard.innerHTML = `
-                    <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-lg p-4 space-y-4 border-t-4 border-primary bg-white">
+      allIssuesContainer.appendChild(issueCard);
+      const copy = issueCard.cloneNode(true);
+      openIssuesContainer.appendChild(copy);
+    } else if (issue.status == "closed") {
+      issueCard.innerHTML = `
+             <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-primary bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Closed- Status .png" alt="">
                     <button class="px-3 rounded-full  ${color(issue.priority)}">${issue.priority}</button>
@@ -221,17 +233,15 @@ const displayIssues = (issues) => {
                     <p class="text-[#64748B] text-[14px]">${date(issue.createdAt)}</p>
                   </div>
                 </div>
-            </div>
+             </div>
         `;
-        allIssuesContainer.appendChild(issueCard);
-        const copy = issueCard.cloneNode(true);
-        closedIssuesContainer.appendChild(copy);
+      allIssuesContainer.appendChild(issueCard);
+      const copy = issueCard.cloneNode(true);
+      closedIssuesContainer.appendChild(copy);
     }
-
-    
   });
+  spinnerManager(false)
 };
- 
 
 loadIssues();
 console.log("selected tab: ", selectedTab);

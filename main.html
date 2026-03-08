@@ -46,13 +46,13 @@
         </div>
       </div>
     </header>
-    <main class="max-w-6xl w-11/12 mx-auto my-16 p-6 space-y-12">
-        <section id="toggle-btns" class=" grid sm:flex gap-4">
+    <main class="max-w-6xl w-11/12 mx-auto my-16  space-y-12">
+        <section id="toggle-btns" class="grid sm:flex gap-4 border border-gray-200 rounded-md p-6">
             <button onclick="switchTab('all-btn')" id="all-btn" class="btn btn-primary">All</button>
             <button onclick="switchTab('open-btn')" id="open-btn" class="btn btn-primary btn-outline">Open</button>
             <button onclick="switchTab('closed-btn')" id="closed-btn" class="btn btn-primary btn-outline">Closed</button>
         </section>
-        <section id="status-bar" class=" sm:flex justify-between">
+        <section id="status-bar" class=" sm:flex justify-between border border-gray-200 rounded-md p-6">
             <div class="flex gap-4">
                 <div class="bg-[#ECE4FF] p-4 h-16 w-16 rounded-full">
                     <img src="./assets/Aperture.png" alt="">
@@ -69,16 +69,22 @@
                 <p>Closed</p>
             </div>
         </section>
-        <section id="all-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4">
-            <!-- ---------------------------------------- -->
-
-
+        <section id="spinner" class="flex justify-center items-center py-20 hidden">
+          <span class="loading loading-spinner loading-xl"></span>
         </section>
-        <section id="open-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 hidden" >
-            
-        </section>
-        <section id="closed-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 hidden">
+        
+        <section id="issues-container">
+          <section id="all-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 border border-gray-200 rounded-md p-6">
+              <!-- ---------------------------------------- -->
 
+
+          </section>
+          <section id="open-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 border border-gray-200 rounded-md p-6 hidden" >
+
+          </section>
+          <section id="closed-issues" class="grid lg:grid-cols-4 sm:grid-cols-2 gap-4 border border-gray-200 rounded-md p-6 hidden">
+
+          </section>
         </section>
     </main>
 
