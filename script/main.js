@@ -9,6 +9,8 @@ searchBar.addEventListener('input',(event)=>{
   const searchText = event.target.value.trim();
 
   if(searchText == ""){
+
+    switchTab(selectedTab);
     loadIssues();
   }else{
     spinnerManager(true);
@@ -20,7 +22,8 @@ searchBar.addEventListener('input',(event)=>{
       document.getElementById("closed-issues").innerHTML = "";
       displayIssues(data.data)
       totalIssues = data.data.length;
-      document.getElementById("issue-count").innerText = totalIssues;
+
+      document.getElementById("issue-count").innerText = `${totalIssues} Searched`;
     })
   }
 
