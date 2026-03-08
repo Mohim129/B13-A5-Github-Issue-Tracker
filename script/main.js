@@ -1,6 +1,75 @@
 let selectedTab = "all-btn";
 
 
+// ---------------load Modal---------------
+const loadModal=async(id)=>{
+  const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+  const res = await fetch(url);
+  const details = await res.json();
+  
+  displayModal(details.data);
+
+}
+// {
+//     "id": 1,
+//     "title": "Fix navigation menu on mobile devices",
+//     "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
+//     "status": "open",
+//     "labels": [
+//         "bug",
+//         "help wanted"
+//     ],
+//     "priority": "high",
+//     "author": "john_doe",
+//     "assignee": "jane_smith",
+//     "createdAt": "2024-01-15T10:30:00Z",
+//     "updatedAt": "2024-01-15T10:30:00Z"
+// }
+const displayModal = (data) =>{
+  console.log(data)
+      function date(dateString) {
+        const date = new Date(dateString);
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+      }
+      function color(priority) {
+        if (priority == "high") {
+          return "bg-error/20 text-error";
+        } else if (priority == "medium") {
+          return "bg-warning/20 text-warning";
+        } else if (priority == "low") {
+          return "bg-neutral/20 text-neutral";
+        }
+      }
+  const modalContainer = document.getElementById("modal-container");
+  modalContainer.innerHTML = `
+      <div id="modal-container" class="space-y-6">
+      <h2 class="font-bold text-2xl">${data.title}</h2>
+      <div class="flex gap-4">
+          <span class="badge badge-success text-white rounded-full">${data.status}</span>
+        <ul class="flex text-gray-400 text-sm">
+          <li>• Opened by ${data.author}</li>
+          <li>• ${date(data.updatedAt)}</li>
+        </ul>
+      </div>
+      <div>
+        ${labelMaker(data.labels)}
+      </div>
+      <p class="text-gray-400">${data.description}</p>
+      <div class="flex w-full p-4">
+        <div class="w-full">
+          <p class="text-gray-400">Assignee:</p>
+          <h4 class="font-semibold">${data.assignee ? data.assignee : "Not Yet Assigned"}</h4>
+        </div>
+        <div class="w-full">
+          <p class="text-gray-400">Priority:</p>
+          <button class="px-3 rounded-full ${color(data.priority)}">${data.priority}</button>
+        </div>
+      </div>
+
+    </div>
+  `;
+  document.getElementById("my_modal_5").showModal();
+}
 // ---------------spinner function---------------
 
 const spinnerManager = (status) => {
@@ -17,12 +86,12 @@ const spinnerManager = (status) => {
 const labelMaker = (label) => {
   const labelColors = (type) => {
     const colors = {
-      bug: "btn px-3 rounded-full bg-error/20 text-error",
-      enhancement: "btn px-3 rounded-full bg-success/20 text-success",
-      "help wanted": "btn px-3 rounded-full bg-warning/20 text-warning",
+      bug: "badge px-3 rounded-full bg-error/20 text-error",
+      enhancement: "badge px-3 rounded-full bg-success/20 text-success",
+      "help wanted": "badge px-3 rounded-full bg-warning/20 text-warning",
       documentation:
-        "btn px-3 rounded-full bg-info-content/20 text-info-content",
-      "good first issue": "btn px-3 rounded-full bg-info/20 text-info",
+        "badge px-3 rounded-full bg-info-content/20 text-info-content",
+      "good first issue": "badge px-3 rounded-full bg-info/20 text-info",
     };
     return colors[type];
   };
@@ -149,21 +218,6 @@ const loadIssues = () => {
     .then((data) => displayIssues(data.data));
 };
 
-// {
-//     "id": 1,
-//     "title": "Fix navigation menu on mobile devices",
-//     "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
-//     "status": "open",
-//     "labels": [
-//         "bug",
-//         "help wanted"
-//     ],
-//     "priority": "high",
-//     "author": "john_doe",
-//     "assignee": "jane_smith",
-//     "createdAt": "2024-01-15T10:30:00Z",
-//     "updatedAt": "2024-01-15T10:30:00Z"
-// }
 
 const displayIssues = (issues) => {
   const allIssuesContainer = document.getElementById("all-issues");
@@ -187,7 +241,7 @@ const displayIssues = (issues) => {
     const issueCard = document.createElement("div");
     if (issue.status == "open") {
       issueCard.innerHTML = `
-            <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-success bg-white">
+            <div onclick="loadModal(${issue.id})" class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-success bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Open-Status.png" alt="">
                     <!-- <img src="./assets/Closed- Status .png" alt=""> -->
@@ -214,7 +268,7 @@ const displayIssues = (issues) => {
       openIssuesContainer.appendChild(copy);
     } else if (issue.status == "closed") {
       issueCard.innerHTML = `
-             <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-primary bg-white">
+             <div onclick="my_modal_5.showModal()" class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-primary bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Closed- Status .png" alt="">
                     <button class="px-3 rounded-full  ${color(issue.priority)}">${issue.priority}</button>
