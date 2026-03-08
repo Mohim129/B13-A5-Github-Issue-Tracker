@@ -45,7 +45,7 @@ const displayModal = (data) =>{
       <div id="modal-container" class="space-y-6">
       <h2 class="font-bold text-2xl">${data.title}</h2>
       <div class="flex gap-4">
-          <span class="badge badge-success text-white rounded-full">${data.status}</span>
+          <span class="badge ${data.status == "open" ? "badge-success" : "badge-primary"} text-white rounded-full">${data.status}</span>
         <ul class="flex text-gray-400 text-sm">
           <li>• Opened by ${data.author}</li>
           <li>• ${date(data.updatedAt)}</li>
@@ -268,7 +268,7 @@ const displayIssues = (issues) => {
       openIssuesContainer.appendChild(copy);
     } else if (issue.status == "closed") {
       issueCard.innerHTML = `
-             <div onclick="my_modal_5.showModal()" class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-primary bg-white">
+             <div onclick="loadModal(${issue.id})" class="card transition-transform duration-300 hover:scale-105 h-full shadow-slate-400 shadow-sm p-4 space-y-4 border-t-4 border-primary bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Closed- Status .png" alt="">
                     <button class="px-3 rounded-full  ${color(issue.priority)}">${issue.priority}</button>
