@@ -1,6 +1,48 @@
 let selectedTab = "all-btn";
 
 
+//----------------search bar----------------
+
+const searchBar = document.getElementById("search-bar");
+
+searchBar.addEventListener('input',(event)=>{
+  const searchText = event.target.value.trim();
+
+  if(searchText == ""){
+    loadIssues();
+  }else{
+    spinnerManager(true);
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`)
+    .then(res=>res.json())
+    .then(data=>{
+      document.getElementById("all-issues").innerHTML = "";
+      document.getElementById("open-issues").innerHTML = "";
+      document.getElementById("closed-issues").innerHTML = "";
+      displayIssues(data.data)
+      totalIssues = data.data.length;
+      document.getElementById("issue-count").innerText = totalIssues;
+    })
+  }
+
+})
+
+
+//-----date and badge function
+      function date(dateString) {
+        const date = new Date(dateString);
+        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+      }
+      function color(priority) {
+        if (priority == "high") {
+          return "bg-error/20 text-error";
+        } else if (priority == "medium") {
+          return "bg-warning/20 text-warning";
+        } else if (priority == "low") {
+          return "bg-neutral/20 text-neutral";
+        }
+      }
+
+
 // ---------------load Modal---------------
 const loadModal=async(id)=>{
   const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
@@ -27,19 +69,7 @@ const loadModal=async(id)=>{
 // }
 const displayModal = (data) =>{
   console.log(data)
-      function date(dateString) {
-        const date = new Date(dateString);
-        return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-      }
-      function color(priority) {
-        if (priority == "high") {
-          return "bg-error/20 text-error";
-        } else if (priority == "medium") {
-          return "bg-warning/20 text-warning";
-        } else if (priority == "low") {
-          return "bg-neutral/20 text-neutral";
-        }
-      }
+
   const modalContainer = document.getElementById("modal-container");
   modalContainer.innerHTML = `
       <div id="modal-container" class="space-y-6">
@@ -48,7 +78,7 @@ const displayModal = (data) =>{
           <span class="badge ${data.status == "open" ? "badge-success" : "badge-primary"} text-white rounded-full">${data.status}</span>
         <ul class="flex text-gray-400 text-sm">
           <li>• Opened by ${data.author}</li>
-          <li>• ${date(data.updatedAt)}</li>
+          <li>• ${date(data.createdAt)}</li>
         </ul>
       </div>
       <div>
@@ -224,20 +254,11 @@ const displayIssues = (issues) => {
   const openIssuesContainer = document.getElementById("open-issues");
   const closedIssuesContainer = document.getElementById("closed-issues");
 
+  allIssuesContainer.innerHTML = "";
+  openIssuesContainer.innerHTML = "";
+  closedIssuesContainer.innerHTML = "";
+
   issues.forEach((issue) => {
-    function date(dateString) {
-      const date = new Date(dateString);
-      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
-    }
-    function color(priority) {
-      if (priority == "high") {
-        return "bg-error/20 text-error";
-      } else if (priority == "medium") {
-        return "bg-warning/20 text-warning";
-      } else if (priority == "low") {
-        return "bg-neutral/20 text-neutral";
-      }
-    }
     const issueCard = document.createElement("div");
     if (issue.status == "open") {
       issueCard.innerHTML = `
