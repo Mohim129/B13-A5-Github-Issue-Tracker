@@ -1,4 +1,37 @@
-// calculate and display total issues count----------
+//-------------make labels function--------------
+ const labelMaker = (label) => {
+    const labelColors = (type) =>{
+        const colors = {
+          bug: "btn px-3 rounded-full bg-error/20 text-error",
+          enhancement: "btn px-3 rounded-full bg-success/20 text-success",
+          "help wanted": "btn px-3 rounded-full bg-warning/20 text-warning",
+          documentation:
+            "btn px-3 rounded-full bg-info-content/20 text-info-content",
+          "good first issue": "btn px-3 rounded-full bg-info/20 text-info",
+        };
+        return colors[type]
+    }
+    const labelIcon = (type) =>{
+        const icons = {
+          bug: "fa-bug",
+          enhancement: "fa-star",
+          "help wanted": "fa-life-ring",
+          documentation: "fa-clipboard",
+          "good first issue": "fa-thumbs-up",
+        };
+        return icons[type]
+    }
+
+    const labelBadge = label.map(
+      (el) =>
+        `<span class="${labelColors(el)}"><i class="fa-solid ${labelIcon(el)}"></i>${el.toUpperCase()}</span>`,
+    );
+    return labelBadge.join(" ");
+ }
+
+
+
+//-------calculate and display total issues count----------
 let selectedTab = "all-btn";
 
 fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
@@ -10,8 +43,6 @@ fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
       } 
       }
     );
-
-
 
 
 
@@ -121,12 +152,25 @@ const loadIssues = () => {
 // }
 
 const displayIssues = (issues) => {
-  // console.log(issues);
+
   const allIssuesContainer = document.getElementById("all-issues");
   const openIssuesContainer = document.getElementById("open-issues");
   const closedIssuesContainer = document.getElementById("closed-issues");
 
   issues.forEach((issue) => {
+    function date(dateString) {
+      const date = new Date(dateString);
+      return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    }
+    function color(priority) {
+      if (priority == "high") {
+        return "bg-error/20 text-error";
+        } else if (priority == "medium") {
+            return "bg-warning/20 text-warning";
+        } else if (priority == "low") {
+            return "bg-neutral/20 text-neutral";
+        }
+    }
     const issueCard = document.createElement("div");
     if (issue.status == "open") {
       issueCard.innerHTML = `
@@ -134,20 +178,19 @@ const displayIssues = (issues) => {
                 <div class="flex justify-between">
                     <img src="./assets/Open-Status.png" alt="">
                     <!-- <img src="./assets/Closed- Status .png" alt=""> -->
-                    <button class="px-3 rounded-full bg-error/20 text-error">${issue.priority}</button>
+                    <button class="px-3 rounded-full ${color(issue.priority)}">${issue.priority}</button>
                 </div>
                 <h4 class="font-semibold">${issue.title}</h4>
                 <p class="text-[#64748B] text-[14px]">${issue.description}</p>
                 <div>
-                    <div class=" btn px-3 rounded-full bg-error/20 text-error"><i class="fa-solid fa-bug"></i>Bug</div>
-                    <div class="btn px-3 rounded-full bg-warning/20 text-warning"><i class="fa-regular fa-life-ring"></i>Help Wanted</div>
+                    ${labelMaker(issue.labels)}
                     
                 </div>
                 <div class="flex flex-col justify-end h-full">
                   <hr class="border-[#E2E8F0] pt-4">
                   <div class="grid justify-between">
                     <p class="text-[#64748B] text-[14px]">#${issue.id} by ${issue.author}</p>
-                    <p class="text-[#64748B] text-[14px]">1/15/2024</p>
+                    <p class="text-[#64748B] text-[14px]">${date(issue.createdAt)}</p>
                   </div>
                 </div>
             </div>
@@ -162,13 +205,12 @@ const displayIssues = (issues) => {
                     <div class="card transition-transform duration-300 hover:scale-105 h-full shadow-lg p-4 space-y-4 border-t-4 border-primary bg-white">
                 <div class="flex justify-between">
                     <img src="./assets/Closed- Status .png" alt="">
-                    <button class="px-3 rounded-full bg-error/20 text-error">${issue.priority}</button>
+                    <button class="px-3 rounded-full  ${color(issue.priority)}">${issue.priority}</button>
                 </div>
                 <h4 class="font-semibold">${issue.title}</h4>
                 <p class="text-[#64748B] text-[14px]">${issue.description}</p>
                 <div>
-                    <div class=" btn px-3 rounded-full bg-error/20 text-error"><i class="fa-solid fa-bug"></i>Bug</div>
-                    <div class="btn px-3 rounded-full bg-warning/20 text-warning"><i class="fa-regular fa-life-ring"></i>Help Wanted</div>
+                    ${labelMaker(issue.labels)}
                     
                 </div>
                 
@@ -176,7 +218,7 @@ const displayIssues = (issues) => {
                   <hr class="border-[#E2E8F0] pt-4">
                   <div class="grid justify-between">
                     <p class="text-[#64748B] text-[14px]">#${issue.id} by ${issue.author}</p>
-                    <p class="text-[#64748B] text-[14px]">1/15/2024</p>
+                    <p class="text-[#64748B] text-[14px]">${date(issue.createdAt)}</p>
                   </div>
                 </div>
             </div>
