@@ -123,7 +123,7 @@ const labelMaker = (label) => {
       enhancement: "badge px-3 rounded-full bg-success/20 text-success",
       "help wanted": "badge px-3 rounded-full bg-warning/20 text-warning",
       documentation:
-        "badge px-3 rounded-full bg-info-content/20 text-info-content",
+        "badge px-3 rounded-full bg-primary/20 text-primary",
       "good first issue": "badge px-3 rounded-full bg-info/20 text-info",
     };
     return colors[type];
