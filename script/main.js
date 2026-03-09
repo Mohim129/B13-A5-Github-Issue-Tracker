@@ -141,7 +141,7 @@ const labelMaker = (label) => {
 
   const labelBadge = label.map(
     (el) =>
-      `<span class="${labelColors(el)}"><i class="fa-solid ${labelIcon(el)}"></i>${el.toUpperCase()}</span>`,
+      `<span class="text-xs ${labelColors(el)}"><i class="fa-solid ${labelIcon(el)}"></i>${el.toUpperCase()}</span>`,
   );
   return labelBadge.join(" ");
 };
